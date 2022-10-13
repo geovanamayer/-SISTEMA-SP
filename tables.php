@@ -11,6 +11,8 @@
 
     <title>Sistema Superpao-User</title>
 
+
+
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -26,6 +28,17 @@
 
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+
+    <!---PYSCRIPT---->
+    <!-- <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script> -->
+
+    <!-- <py-env>
+- cmath.log 
+- ssl
+- psycopg2
+    </py-env> -->
 
 </head>
 
@@ -403,6 +416,10 @@
                         href="https://datatables.net"></a></p>
 
 
+
+                        
+
+
 <!-- INICIO FORMULARIO -->
  <!--CSS-->
  <style>
@@ -475,13 +492,77 @@
                    
             }
     </style>
+
+
+<!-- <style>
+            body{
+                font-family:Arial, Helvetica, sans-serif ;
+            }
+            .box{ 
+                color: white; 
+                position: fixed; 
+                top: 50%; 
+                left: 50%; 
+                transform: translate(-50%, -50%); 
+                background-color: #000CDF; 
+                padding: 15px; 
+                border-radius: 15px; 
+                width: 30%; 
+            }
+            fieldset{
+                border: 3px solid  black;
+            }
+            legend{
+                
+                text-align: center;
+                border-radius: 8px;    
+            }
+            .inputBox{
+                position: relative;
+                                    
+                   
+            }
+            .caixa{
+                 
+            }
+            
+            .inputUser{
+                background: white;
+                border: none;
+                border-bottom: 1px solid white;
+                border-radius: 20px;
+                outline: none;
+                
+                font-size: 15px;
+                width: 100%;
+                letter-spacing: 2px;
+
+            }
+            #submit{
+                background-image: linear-gradient(to right, rgb(0, 92, 197), rgb(90, 20, 220)); 
+                width: 100%;
+                border: none;
+                padding: 15px;
+                color: white;
+                font-size: 15px;
+                cursor: pointer;
+                border-radius: 25px;
+            }
+            #submit:hover{
+                background-image: linear-gradient(to right, rgb(0, 80, 172), rgb(80, 19, 195));
+            }
+
+        </style> -->
     <!--SCRIPT-->
     <script type='text/javascript' src="main.js"></script>
+    <!--jQuery-->
+	<script src="https://code.jquery.com/jquery-2.0.3.min.js" type="text/javascript"></script>
+	<!--Script -->
+    <script src="script.js" type="text/javascript"></script>
+    <!--Script -->
 
 
     <!--FORM E CONECT PHP-->
-
-
     <?php
     error_reporting(E_ERROR | E_PARSE);
     if(isset($_POST['submit']))
@@ -495,8 +576,8 @@
             // print_r('<br>');
             // print_r('Setor:' .$_POST['setor']);
             // print_r('<br>');
-            // print_r('Senha:' .$_POST['senha']);
-        
+             // print_r('Senha:' .$_POST['senha']);
+       
         }
         
         include_once('config.php');
@@ -518,8 +599,8 @@
    
    
 //        $sql = "SELECT * FROM usuarios ORDER BY id DESC";
-        $result = pg_query($conexao,$sql);
-      //   $result = pg_query($conexao,$query);
+      //  $result = pg_query($conexao,$sql);
+         $result = pg_query($conexao,$query);
      
       // $result = $conexao->pg_query($sql);
     //    print_r($result);
@@ -527,7 +608,7 @@
         
     ?>
     <body page='lista'autocomplete="off" action="tables.php" method="POST">
-        
+         
         <div id='listaRegistros'>
 
     <div style='display: flex;'>
@@ -535,15 +616,12 @@
     </div>
     <br>
 
-    <!--FORMULARIO WHILE PHP PARA CONECT DA TABELA-->
+<!-- FORMULARIO TABELA
     <div>
     <table class="table">
     <thead>
         <tr>
-    
 
-        
-                
                 </td> 
                 
             
@@ -558,19 +636,30 @@
 
         </tr>
     </thead>
-
+    <tbody id='listaRegistrosBody'></tbody>
 
     </table>
     </div>
 
-    <!--BUTTON NOVO-->
 
     <div>
         <button autocomplete="off" action="tables.phps" method="POST" onclick="vizualizar('cadastro', true)">Novo usuário</button>
     </div>
 
-    </div>
-    <div class="box">
+    </div> 
+
+
+   
+    <div class="box"> -->
+
+<!--test pyscript--->
+<!-- <div id="python-container"></div>
+    <py-script output="python-container">
+    
+    - paths:
+    - ./main.py
+</py-script> -->
+  
 
     <!--FORMULARIO QUE CADASTRA NO BANCO--->
                 <form autocomplete="off" action="tables.php" method="POST" id="">
@@ -617,7 +706,7 @@
                                 <input type = "checkbox" id = "financeiro" name = "setor" value = "financeiro">
                                 <label for ="financeiro"> Financeiro </label>
                             
-                            
+                          
                             <div>
                                 <input type = "checkbox" id = "supply" name = "setor" value = "supply">
                             <label for = "supply"> Supply </label>
@@ -639,15 +728,93 @@
                             <label for="senha" class="labelinput"> Senha</label>
                         </div>
                         <div>
-                        <button>Salvar</button>
+                        <input class="inputBox" type="submit" name="submit" id="submit" value="Cadastrar"> 
                 <button onclick="vizualizar('lista')" class="cinza" type='button'>Cancelar</button>
             </div>
 
                     </fieldset>
-                </form>        
-            </div>
+                </form> 
+              
+<!---trazer os dados do banco-->  
+<?php
+/**
+ * Tutorial jSON
+ */
 
-    <!---formulario acaba aqui-->
+//Definir formato de arquivo
+header('Content-Type:' . "text/plain");
+
+    $dbhost = "localhost";
+    $dbUsername = "postgres";
+    $dbPassword = "senha";
+    $dbName = "grupo_superpao_banco_usuarios";
+    
+    $conexao = pg_connect("host=$dbhost dbname=$dbName user=$dbUsername password=$dbPassword");
+
+    if(!$conexao)
+     {
+         echo "Erro";
+     } else
+     {
+        echo "Conectado ";
+     }
+
+     
+//SQL de BUSCA LISTAGEM
+$sql = "SELECT * FROM usuarios ";
+$result = pg_query($sql); //Executar a SQL
+$n = pg_num_rows($result); //Número de Linhas retornadas
+
+if (!$result) {
+//Caso não haja retorno
+echo '[{"erro": "Há algum erro com a busca. Não retorna resultados"';
+echo '}]';
+}else if($n<1) {
+//Caso não tenha nenhum item
+echo '[{"erro": "Não há nenhum dado cadastrado"';
+echo '}]';
+}else {
+//Mesclar resultados em um array
+for($i = 0; $i<$n; $i++) { $dados[] = pg_fetch_assoc($result, $i); } echo json_encode($dados, JSON_PRETTY_PRINT); } 
+
+?>
+
+
+<script>
+$(document).ready(function(){
+$.post('grupo_superpao_banco_usuarios', function(retorna){
+$("conteudo").html(retorna);
+});
+});
+</script>
+
+<body onload="carregarItens()">
+		<section>
+			<h1>Usuarios Cadastrados</h1>
+			<!--Área que mostrará carregando-->
+			<h2></h2>
+			<!--Tabela-->
+			<table id="minhaTabela">
+				<caption></caption>
+			
+                <th >Login</th>
+                <th >Nome</th>
+                <th >Email</th>
+                <th >Setor</th>
+                <th >Senha</th>
+                <th >Unidade</th>
+                <th ></th> 
+     
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</section>
+
+
+</div>
+
+<!---formulario acaba aqui-->
 
 
 
