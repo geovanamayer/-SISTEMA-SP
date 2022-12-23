@@ -1,1 +1,1 @@
-Sistema feito empresas 
+Sistema feito para empresas 
